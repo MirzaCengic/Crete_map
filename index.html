@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Crete_N2K_conservation_value</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+		<link rel="stylesheet" type="text/css" href="css/own_style.css">
+		<link rel="stylesheet" href="css/label.css" />
+		<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+		<script src="js/leaflet-hash.js"></script>
+		<script src="js/label.js"></script>
+		<script src="js/Autolinker.min.js"></script>
+	</head>
+	<body>
+		<div id="map"></div>
+		<input id="slide" type="range" min="0" max="1" step="0.1" value="1" onchange="updateOpacity(this.value)">
+		<script src="data/exp_Allspecies.js"></script>
+		<script src="data/exp_AnnexIIspecies.js"></script>
+		<script src="data/exp_Redlistspecies.js"></script>
+		<script>
+		var map = L.map('map', {
+			zoomControl:true, maxZoom:19
+		}).fitBounds([[34.3669907272,22.9989278811],[36.1248418313,27.0623428377]]);
+		var hash = new L.Hash(map);
+		var additional_attrib = 'created w. <a href="https://github.com/geolicious/qgis2leaf" target ="_blank">qgis2leaf</a> by <a href="http://www.geolicious.de" target ="_blank">Geolicious</a> & contributors<br>';
+		var feature_group = new L.featureGroup([]);
+		var raster_group = new L.LayerGroup([]);
+		var basemap_0 = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { 
+			attribution: additional_attrib + '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+		});	
+		basemap_0.addTo(map);
+		var basemap_1 = L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/sat/{z}/{x}/{y}.jpg', { 
+			attribution: additional_attrib + 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> &mdash; Portions Courtesy NASA/JPL-Caltech and U.S. Depart. of Agriculture, Farm Service Agency'
+		});	
+		var layerOrder=new Array();
+		function pop_Redlistspecies(feature, layer) {					
+			var popupContent = '<table><tr><th scope="row">OBJECTID</th><td>' + Autolinker.link(String(feature.properties['OBJECTID'])) + '</td></tr><tr><th scope="row">CODE</th><td>' + Autolinker.link(String(feature.properties['CODE'])) + '</td></tr><tr><th scope="row">Site</th><td>' + Autolinker.link(String(feature.properties['Site'])) + '</td></tr><tr><th scope="row">AREA</th><td>' + Autolinker.link(String(feature.properties['AREA'])) + '</td></tr><tr><th scope="row">Mn_all_sp</th><td>' + Autolinker.link(String(feature.properties['Mn_all_sp'])) + '</td></tr><tr><th scope="row">Mn_AnnxII</th><td>' + Autolinker.link(String(feature.properties['Mn_AnnxII'])) + '</td></tr><tr><th scope="row">Mn_RedList</th><td>' + Autolinker.link(String(feature.properties['Mn_RedList'])) + '</td></tr><tr><th scope="row">URL</th><td>' + Autolinker.link(String(feature.properties['URL'])) + '</td></tr></table>';
+			layer.bindPopup(popupContent);
+		}
+
+		function doStyleRedlistspecies(feature) {
+			if (feature.properties.Mn_RedList >= 0.09185 && feature.properties.Mn_RedList <= 0.260015) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#edf8fb',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_RedList >= 0.260015 && feature.properties.Mn_RedList <= 0.42818) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#b3cde3',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_RedList >= 0.42818 && feature.properties.Mn_RedList <= 0.596345) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#8c96c6',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_RedList >= 0.596345 && feature.properties.Mn_RedList <= 0.76451) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#8856a7',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_RedList >= 0.76451 && feature.properties.Mn_RedList <= 0.932675) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#810f7c',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+		}
+		var exp_RedlistspeciesJSON = new L.geoJson(exp_Redlistspecies,{
+			onEachFeature: pop_Redlistspecies,
+			style: doStyleRedlistspecies
+		});
+		//add comment sign to hide this layer on the map in the initial view.
+		feature_group.addLayer(exp_RedlistspeciesJSON);
+		function pop_AnnexIIspecies(feature, layer) {					
+			var popupContent = '<table><tr><th scope="row">OBJECTID</th><td>' + Autolinker.link(String(feature.properties['OBJECTID'])) + '</td></tr><tr><th scope="row">CODE</th><td>' + Autolinker.link(String(feature.properties['CODE'])) + '</td></tr><tr><th scope="row">Site</th><td>' + Autolinker.link(String(feature.properties['Site'])) + '</td></tr><tr><th scope="row">AREA</th><td>' + Autolinker.link(String(feature.properties['AREA'])) + '</td></tr><tr><th scope="row">Mn_all_sp</th><td>' + Autolinker.link(String(feature.properties['Mn_all_sp'])) + '</td></tr><tr><th scope="row">Mn_AnnxII</th><td>' + Autolinker.link(String(feature.properties['Mn_AnnxII'])) + '</td></tr><tr><th scope="row">Mn_RedList</th><td>' + Autolinker.link(String(feature.properties['Mn_RedList'])) + '</td></tr><tr><th scope="row">URL</th><td>' + Autolinker.link(String(feature.properties['URL'])) + '</td></tr></table>';
+			layer.bindPopup(popupContent);
+		}
+
+		function doStyleAnnexIIspecies(feature) {
+			if (feature.properties.Mn_AnnxII >= 0.078733 && feature.properties.Mn_AnnxII <= 0.216277) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#edf8fb',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_AnnxII >= 0.216277 && feature.properties.Mn_AnnxII <= 0.35382) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#b3cde3',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_AnnxII >= 0.35382 && feature.properties.Mn_AnnxII <= 0.491364) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#8c96c6',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_AnnxII >= 0.491364 && feature.properties.Mn_AnnxII <= 0.628907) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#8856a7',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_AnnxII >= 0.628907 && feature.properties.Mn_AnnxII <= 0.766451) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#810f7c',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+		}
+		var exp_AnnexIIspeciesJSON = new L.geoJson(exp_AnnexIIspecies,{
+			onEachFeature: pop_AnnexIIspecies,
+			style: doStyleAnnexIIspecies
+		});
+		//add comment sign to hide this layer on the map in the initial view.
+		feature_group.addLayer(exp_AnnexIIspeciesJSON);
+		function pop_Allspecies(feature, layer) {					
+			var popupContent = '<table><tr><th scope="row">OBJECTID</th><td>' + Autolinker.link(String(feature.properties['OBJECTID'])) + '</td></tr><tr><th scope="row">CODE</th><td>' + Autolinker.link(String(feature.properties['CODE'])) + '</td></tr><tr><th scope="row">Site</th><td>' + Autolinker.link(String(feature.properties['Site'])) + '</td></tr><tr><th scope="row">AREA</th><td>' + Autolinker.link(String(feature.properties['AREA'])) + '</td></tr><tr><th scope="row">Mn_all_sp</th><td>' + Autolinker.link(String(feature.properties['Mn_all_sp'])) + '</td></tr><tr><th scope="row">Mn_AnnxII</th><td>' + Autolinker.link(String(feature.properties['Mn_AnnxII'])) + '</td></tr><tr><th scope="row">Mn_RedList</th><td>' + Autolinker.link(String(feature.properties['Mn_RedList'])) + '</td></tr><tr><th scope="row">URL</th><td>' + Autolinker.link(String(feature.properties['URL'])) + '</td></tr></table>';
+			layer.bindPopup(popupContent);
+		}
+
+		function doStyleAllspecies(feature) {
+			if (feature.properties.Mn_all_sp >= 0.111368 && feature.properties.Mn_all_sp <= 0.249005) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#edf8fb',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_all_sp >= 0.249005 && feature.properties.Mn_all_sp <= 0.386642) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#b3cde3',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_all_sp >= 0.386642 && feature.properties.Mn_all_sp <= 0.52428) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#8c96c6',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_all_sp >= 0.52428 && feature.properties.Mn_all_sp <= 0.661917) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#8856a7',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+			if (feature.properties.Mn_all_sp >= 0.661917 && feature.properties.Mn_all_sp <= 0.799554) {
+				return {
+					color: '#000000',
+					weight: '1.3',
+					fillColor: '#810f7c',
+					opacity: '1.0',
+					fillOpacity: '1.0',
+				}
+			}
+		}
+		var exp_AllspeciesJSON = new L.geoJson(exp_Allspecies,{
+			onEachFeature: pop_Allspecies,
+			style: doStyleAllspecies
+		});
+		//add comment sign to hide this layer on the map in the initial view.
+		feature_group.addLayer(exp_AllspeciesJSON);
+
+		feature_group.addTo(map);
+		var title = new L.Control();
+		title.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			this.update();
+			return this._div;
+		};
+		title.update = function () {
+			this._div.innerHTML = '<h2>Natura 2000 sites conservation value</h2>Mean conservation value for multiple scenarios'
+		};
+		title.addTo(map);
+	var baseMaps = {
+		'OSM Standard': basemap_0,
+		'MapQuestOpen Aerial': basemap_1};
+		L.control.layers(baseMaps,{"Allspecies": exp_AllspeciesJSON,"AnnexIIspecies": exp_AnnexIIspeciesJSON,"Redlistspecies": exp_RedlistspeciesJSON},{collapsed:false}).addTo(map);
+		function updateOpacity(value) {
+	}
+		L.control.scale({options: {position: 'bottomleft',maxWidth: 100,metric: true,imperial: false,updateWhenIdle: false}}).addTo(map);
+	</script>
+</body>
+</html>
